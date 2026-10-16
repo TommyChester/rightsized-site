@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Email confirmed · Rightsized</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Figtree:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<main>
+  <img class="logo" src="../assets/logo.svg" alt="Rightsized logo">
+
+  <section id="ok">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <h1>Your email is confirmed</h1>
+      <p class="lede">Your Rightsized account is ready.</p>
+      <div class="card">
+        <h2>What to do next</h2>
+        <ol>
+          <li>Open Rightsized on your phone.</li>
+          <li>Tap <strong>I already have an account</strong>.</li>
+          <li>Sign in with the email and password you just used.</li>
+        </ol>
+      </div>
+      <a class="button" href="rightsized://">Open Rightsized</a>
+      <p class="small muted">If the button doesn't open the app, open it from your home screen instead.</p>
+    </div>
+  </section>
+
+  <section id="failed" hidden>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <h1>This link didn't work</h1>
+      <p class="lede" id="failed-reason">The confirmation link has expired or was already used.</p>
+      <div class="card">
+        <h2>Try this</h2>
+        <ol>
+          <li>Open Rightsized and try signing in. If your email was already confirmed, it will work.</li>
+          <li>If not, sign up again with the same email to get a fresh link.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <p class="small muted">Rightsized is a self-help tool, not medical care. If you're in crisis in the US, call or text 988.</p>
+</main>
+<footer>
+  <span>© Approach Analytics</span>
+  <a href="../">Rightsized home</a>
+</footer>
+<script>
+  // Supabase reports a failed confirmation in the query string or the hash.
+  (function () {
+    var params = new URLSearchParams(location.search + '&' + location.hash.replace(/^#/, ''));
+    var error = params.get('error_description') || params.get('error');
+    if (!error) return;
+    document.getElementById('ok').hidden = true;
+    document.getElementById('failed').hidden = false;
+    if (/expired|invalid/i.test(error)) return;
+    document.getElementById('failed-reason').textContent = error.replace(/\+/g, ' ');
+  })();
+</script>
+</body>
+</html>
